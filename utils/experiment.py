@@ -29,9 +29,7 @@ def get_loader(args):
 
     if args.mode == "train":
         dataset = LandScapeDataset(args.mode)
-        # TODO Start: Finish dataloader here #
-        dataloader = None
-        # TODO End #
+        dataloader = DataLoader(dataset, shuffle=True, num_workers=num_workers, batch_size=args.batch_size)
     elif args.mode == "test":
         dataset = LandScapeDataset(args.mode)
         dataloader = DataLoader(dataset, shuffle=False, num_workers=num_workers, batch_size=args.batch_size)

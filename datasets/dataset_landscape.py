@@ -3,9 +3,8 @@ import numpy as np
 from PIL import Image
 from torch.utils.data import Dataset
 
-# TODO Start: Inherit from torch.utils.data.Dataset #
-class LandScapeDataset(object):
-# TODO End #
+
+class LandScapeDataset(torch.utils.data.Dataset):
     def __init__(self, mode="train"):
         self.mode = mode
         if mode == "train" or mode == "val":
@@ -19,9 +18,7 @@ class LandScapeDataset(object):
                 self.images = file.read().strip().split('\n')[1:]
 
     def __len__(self):
-        # TODO Start: Return length of current dataset #
-        return 0
-        # TODO End #
+        return len(self.images)
 
     def __getitem__(self, idx):
         """
@@ -31,14 +28,12 @@ class LandScapeDataset(object):
 
         file_name = self.images[idx]
 
-        # TODO Start: Use Image from PIL to load image, then resize it to (w/4, h/4) #
         image = Image.open(f"./data/{self.mode}/imgs/{file_name}")
-        image = image.resize((0, 0))  # Resize to (w/4, h/4)
-        # TODO End #
+        image = image.resize((int(image.size[0] / 4), int(image.size[1] / 4)))  # Resize to (w/4, h/4)
 
         array = np.array(image)
         # TODO Start: What is this line doing? #
-        # array = array.transpose((2, 0, 1))  # From (192, 256, 3) to (3, 192, 256)
+        array = array.transpose((2, 0, 1))  # From (192, 256, 3) to (3, 192, 256)
         # TODO End #
 
         ret_dict = {

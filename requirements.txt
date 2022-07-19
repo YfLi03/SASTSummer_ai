@@ -1,8 +1,8 @@
-ipython
-pillow
-numpy
-torch==1.12.0
+ipython~=8.4.0
+pillow~=9.2.0
+numpy~=1.23.1
 requests
-tqdm
-matplotlib
+tqdm~=4.64.0
+torch==1.12.0
+matplotlib~=3.5.2
 

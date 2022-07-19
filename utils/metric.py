@@ -1,6 +1,7 @@
 import os
 import numpy as np
 from matplotlib import pyplot as plt
+from IPython import embed
 
 
 def calc_accuracy(pred_label, gt_label):
@@ -23,6 +24,8 @@ def draw_loss_curve(args, loss_list):
     os.makedirs(f"{args.save_path}/{args.task_name}", exist_ok=True)
     plt.cla()
     # TODO Start: Plot curve using values in loss_list #
-    plt.plot([], [])
+    plt.plot(range(0, loss_list), loss_list)
+    embed()
+
     # TODO End #
     plt.savefig(f"{args.save_path}/{args.task_name}/loss.png")

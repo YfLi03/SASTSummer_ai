@@ -4,6 +4,7 @@ from PIL import Image
 from tqdm import tqdm
 from pathlib import Path
 from argparse import ArgumentParser
+from IPython import embed
 
 
 def calc_label(label: np.ndarray, threshold: float):
@@ -23,10 +24,15 @@ def calc_label(label: np.ndarray, threshold: float):
         "water": [2, 3, 8, 16, 20],
     }
 
-    # TODO Start: Finish this function #
-    raise NotImplementedError
-    return {"mountain": True, "sky": True, "water": True}
-    # TODO End #
+    res = {}
+    for key, val in label2id.items():
+        cnt = np.count_nonzero(np.isin(label, val))
+        if cnt > threshold * label.size:
+            res[key] = True
+        else:
+            res[key] = False
+
+    return {"mountain": res["mountain"], "sky": res["sky"], "water": res["water"]}
 
 
 def process_data(mode: str, threshold: float):
@@ -40,8 +46,8 @@ def process_data(mode: str, threshold: float):
 
     # TODO Start: Append directory in pathlib.Path, so that they point to `./data/{mode}/imgs`
     #  and `./data/{mode}/labels` #
-    image_dir = None
-    label_dir = None
+    image_dir = working_dir.joinpath("imgs")
+    label_dir = working_dir.joinpath("labels")
     # TODO End #
 
     print(f"[Data] Now in {working_dir}...")
@@ -54,7 +60,7 @@ def process_data(mode: str, threshold: float):
 
     # TODO Start: Construct a list of filenames without suffix from image_dir, like ['48432_b67ec6cd63_b',
     #  '70190_90b25efb3b_b', ...] #
-    filename_list = [None, None, ...]
+    filename_list = [file[:-4] for file in os.listdir(image_dir)]
     # TODO End #
 
     for idx, file_name in tqdm(enumerate(filename_list), total=len(filename_list)):
@@ -70,7 +76,8 @@ def process_data(mode: str, threshold: float):
 
     # After all file has been processed, write `out_str` to `{working_dir}/file.txt`
     # TODO Start: Write out_str to `{working_dir}/file.txt` in overwritten mode #
-    raise NotImplementedError
+    f = open(f"{working_dir}/file.txt", "w")
+    f.write(out_str)
     # TODO End #
 
 
