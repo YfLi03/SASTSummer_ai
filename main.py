@@ -13,7 +13,7 @@ if __name__ == "__main__":
     # Meta info
     parser.add_argument("--task_name", type=str, default="baseline", help="Task name to save.")
     parser.add_argument("--mode", type=str, choices=["train", "test"], default="train", help="Mode to run.")
-    parser.add_argument("--device", type=int, default=0 if torch.cuda.is_available() else "cpu", help="Device number.")
+    parser.add_argument("--device", type=int, default=0 if torch.cuda.is_available() else 1, help="Device number.")
     parser.add_argument("--num_workers", type=int, default=0, help="Spawn how many processes to load data.")
     parser.add_argument("--rng_seed", type=int, default=114514, help='manual seed')
 
@@ -23,9 +23,8 @@ if __name__ == "__main__":
     parser.add_argument("--checkpoint_path", type=str, default="", help="Checkpoint path to load.")
     parser.add_argument("--save_path", type=str, default="./save/", help="Checkpoint path to save.")
     parser.add_argument("--save_freq", type=int, default=1, help="Save model every how many epochs.")
-    # TODO Start: Define `args.val_freq` and `args.print_freq` here #
-
-    # TODO End #
+    parser.add_argument("--val_freq", type=int, default=1, help="Val model every how many epochs.")
+    parser.add_argument("--print_freq", type=int, default=1, help="Print model every how many epochs.")
     parser.add_argument("--batch_size", type=int, default=8, help="Entry numbers every batch.")
 
     # Optimizer
@@ -34,6 +33,8 @@ if __name__ == "__main__":
     parser.add_argument("--weight_decay", type=float, default=0.02, help="Weight decay regularization for model.")
 
     args = parser.parse_args()
+    print("args")
+    print(args)
     initiate_environment(args)
 
     # Prepare dataloader
@@ -44,9 +45,7 @@ if __name__ == "__main__":
     if args.optimizer == "SGD":
         optimizer = optim.SGD(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     elif args.optimizer == "Adam":
-        # TODO Start: define Adam optimizer here #
-        optimizer = None
-        # TODO End #
+        optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_dacay)
     else:
         raise NotImplementedError("You must specify a valid optimizer type!")
 

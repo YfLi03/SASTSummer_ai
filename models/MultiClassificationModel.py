@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from typing import List
+from IPython import embed
 
 
 class MultiClassificationModel(nn.Module):
@@ -19,8 +20,13 @@ class MultiClassificationModel(nn.Module):
             self.cls_head.append(ClassificationHead())
 
     def forward(self, train_input):
+        print("question")
+        embed()
         features = self.backbone(train_input)
+        embed()
         features = self.flatten(features)
+        embed()
+        # What's the size and shape of the features?
         return torch.stack([head(features) for head in self.cls_head], dim=1)  # From three (8, 2) to (8, 3, 2)
 
 
@@ -38,6 +44,9 @@ def make_layers(cfg: List, batch_norm=True):
                 layers += [conv2d, nn.ReLU(inplace=True)]
             in_channels = v
     return nn.Sequential(*layers)
+    # A sequential container of modules, inherited from nn.Modules.
+    # Modules can be passed in directly, or a dict of modules can be passed in.
+    # The * operator separate a tuple
 
 
 class VGG16(nn.Module):
@@ -61,6 +70,8 @@ class VGG16(nn.Module):
 class ClassificationHead(nn.Module):
     def __init__(self):
         super(ClassificationHead, self).__init__()
+        # nn.ModuleList resembles nn.List, except that all modules are registered,
+        # so they'll work in a neural network
         self.linear = nn.ModuleList([
             nn.Linear(512 * (1024 // 4 // 32) * (768 // 4 // 32), 64),
             nn.Linear(64, 16),
@@ -69,6 +80,7 @@ class ClassificationHead(nn.Module):
         self.relu = nn.ReLU()
         self.softmax = nn.Softmax(dim=-1)
         self.dropout = nn.Dropout()
+        # Dropout avoids over-fitting
 
     def forward(self, features):
         f1 = self.dropout(self.relu(self.linear[0](features)))
