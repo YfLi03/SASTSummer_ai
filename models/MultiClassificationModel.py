@@ -20,13 +20,11 @@ class MultiClassificationModel(nn.Module):
             self.cls_head.append(ClassificationHead())
 
     def forward(self, train_input):
-        print("question")
-        embed()
+        # train input: [8, 3, 192, 256]
         features = self.backbone(train_input)
-        embed()
+        # features [8, 512, 6, 8]
         features = self.flatten(features)
-        embed()
-        # What's the size and shape of the features?
+        # features [8, 24576]
         return torch.stack([head(features) for head in self.cls_head], dim=1)  # From three (8, 2) to (8, 3, 2)
 
 

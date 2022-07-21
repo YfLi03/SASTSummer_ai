@@ -13,7 +13,7 @@ if __name__ == "__main__":
     # Meta info
     parser.add_argument("--task_name", type=str, default="baseline", help="Task name to save.")
     parser.add_argument("--mode", type=str, choices=["train", "test"], default="train", help="Mode to run.")
-    parser.add_argument("--device", type=int, default=0 if torch.cuda.is_available() else 1, help="Device number.")
+    parser.add_argument("--device", type=str, default="cuda:0" if torch.cuda.is_available() else "cpu", help="Device number.")
     parser.add_argument("--num_workers", type=int, default=0, help="Spawn how many processes to load data.")
     parser.add_argument("--rng_seed", type=int, default=114514, help='manual seed')
 
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     if args.optimizer == "SGD":
         optimizer = optim.SGD(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     elif args.optimizer == "Adam":
-        optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_dacay)
+        optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     else:
         raise NotImplementedError("You must specify a valid optimizer type!")
 
