@@ -41,6 +41,7 @@ if __name__ == "__main__":
     loader, val_loader = get_loader(args)
 
     # Load model & optimizer
+    # if a ckpt is trained in SGD, it should be used in SGD
     model = MultiClassificationModel()
     if args.optimizer == "SGD":
         optimizer = optim.SGD(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)

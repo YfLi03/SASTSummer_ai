@@ -1,3 +1,10 @@
+## 作业上交 Reademe
+1. 使用方法: 与原作业环境配置无差别, 具体参数可以通过 --help 查看。 值得注意的是, 执行test任务必须要指定 --checkpoint_path [存档路径]
+2. 存档点: 在[清华云盘](https://cloud.tsinghua.edu.cn/f/7a3b3e5095b24533b341/)中上传了一份准确率接近90%的存档点, 采用了SGD Optimizer.
+
+
+----
+
 # 数据分析 & PyTorch 图像多分类作业
 <center>By c7w</center>
 

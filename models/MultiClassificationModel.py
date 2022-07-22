@@ -24,7 +24,7 @@ class MultiClassificationModel(nn.Module):
         features = self.backbone(train_input)
         # features [8, 512, 6, 8]
         features = self.flatten(features)
-        # features [8, 24576]
+        # features [8, 24576], flattened
         return torch.stack([head(features) for head in self.cls_head], dim=1)  # From three (8, 2) to (8, 3, 2)
 
 

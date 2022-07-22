@@ -23,6 +23,11 @@ def initiate_environment(args):
 
 
 def get_loader(args):
+    """
+    load the data(images)
+    :param args: Runtime arguments.
+    :return:
+    """
     num_workers = args.num_workers
     val_dataset = LandScapeDataset("val")
     val_dataloader = DataLoader(val_dataset, shuffle=False, num_workers=num_workers, batch_size=args.batch_size)
@@ -73,12 +78,14 @@ def train_one_epoch(epoch, train_loader, args, model, criterion, optimizer, stat
         train_input, train_label = train_data["image"].to(args.device), train_data["label"].to(args.device)
         pred_label = model(train_input)
 
-        # TODO Start: understand this...
+        # first, the grade is set to zero
         optimizer.zero_grad()
+        # the calculation is done
         loss = criterion(pred_label.reshape(-1, 2), train_label.reshape(-1).long())
+        # the loss is conveyed back
         loss.backward()
+        # the parameters are adjusted
         optimizer.step()
-        # TODO END
 
         if train_idx % args.print_freq == 0:
             # Calc accuracy for display of current batch
